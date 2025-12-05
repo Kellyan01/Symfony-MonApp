@@ -101,4 +101,48 @@ final class ArticleController extends AbstractController
             'message' => $request->query->get('message')
         ]);
     }
+
+    #[Route('/update/article/{id}', name: 'app_article_update', methods:['GET', 'POST'])]
+    public function updateArticle(Request $request, ArticleRepository $articleRepo, $id){
+        //Récupération de l'article en bdd
+        $article = $articleRepo->find($id);
+
+        //Création du formulaire d'ajout d'article
+        $form = $this->createForm(ArticleType::class,$article);
+
+        //Récupérer les données du formulaire via l'objet request
+        $form->handleRequest($request);
+
+        // Variable d'affichage pour un message
+        $message='';
+
+        //Vérifier qu'on reçoit un formulaire + vérifier qu'il est valide
+        if($form->isSubmitted() && $form->isValid()){
+            //Afficher le contenu de mon objet (dump and die)
+            //dd($article);
+
+            //Persister mon objet article
+            $this->em->persist($article);
+
+            //Flush de mon article
+            $this->em->flush();
+
+            //Redirection vers la même route pour faire un reset du formulaire
+            //return $this->redirectToRoute('app_article_create',['message' => 'enregistrement effectué']);
+
+            $message=$article->getTitleArticle().' Mis à Jour !';
+        }
+
+        // $message='';
+        // if(isset($_GET['message']) && !empty($_GET['message'])){
+        //     $message = $_GET['message'];
+        // };
+
+        //Affichage du formulaire en le passant à Twig
+        return $this->render('article/index.html.twig', [
+            'controller_name' => 'ArticleController',
+            'totoForm' => $form,
+            'message' => $message // $request->query->get('message')
+        ]);
+    }
 }

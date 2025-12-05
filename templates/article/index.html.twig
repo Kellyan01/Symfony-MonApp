@@ -28,6 +28,7 @@
         <a href=" {{ path('app_article') }} ">Liste des Articles</a>
     {% endif %}
 
+<turbo-frame id="form">
     {{ form_start(totoForm) }}
         <div class='toto'>
             {{ form_row(totoForm.title_article)}}
@@ -35,5 +36,6 @@
         
     {{ form_end(totoForm) }}
     <p>{{ message }}</p>
+</turbo-frame>
 </div>
 {% endblock %}
