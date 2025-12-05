@@ -21,11 +21,19 @@
     {% endfor %}
     {% endif %}
 
-    {% if article is defined %}
+    {% if article is defined and article is not null %}
         <h2>{{ article.titleArticle }}</h2>
         <p>{{ article.contentArticle }}</p>
         <p>{{ article.createdAt | date("d-m-Y", "Europe/Paris") }}</p>
         <a href=" {{ path('app_article') }} ">Liste des Articles</a>
     {% endif %}
+
+    {{ form_start(totoForm) }}
+        <div class='toto'>
+            {{ form_row(totoForm.title_article)}}
+        </div>
+        
+    {{ form_end(totoForm) }}
+    <p>{{ message }}</p>
 </div>
 {% endblock %}
